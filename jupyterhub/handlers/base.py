@@ -1124,6 +1124,7 @@ class BaseHandler(RequestHandler):
 
     async def user_stopped(self, user, server_name):
         """Callback that fires when the spawner has stopped"""
+        self.clear_login_cookie()
         spawner = user.spawners[server_name]
 
         poll_start_time = time.perf_counter()
