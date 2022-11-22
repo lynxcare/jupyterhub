@@ -1123,6 +1123,7 @@ class BaseHandler(RequestHandler):
                 )
 
     async def user_stopped(self, user, server_name):
+        print("call user_stopped")
         """Callback that fires when the spawner has stopped"""
         self.clear_login_cookie()
         spawner = user.spawners[server_name]
@@ -1137,7 +1138,7 @@ class BaseHandler(RequestHandler):
             status = 'unknown'
 
         self.log.warning(
-            "User %s server stopped, with exit code: %s", user.name, status
+            "!!FREIA!User %s server stopped, with exit code: %s", user.name, status
         )
         proxy_deletion_start_time = time.perf_counter()
         try:
