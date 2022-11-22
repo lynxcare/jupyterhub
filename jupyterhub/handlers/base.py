@@ -1142,6 +1142,7 @@ class BaseHandler(RequestHandler):
         await user.stop(server_name)
 
     async def stop_single_user(self, user, server_name=''):
+        self.clear_login_cookie()
         if server_name not in user.spawners:
             raise KeyError("User %s has no such spawner %r", user.name, server_name)
         spawner = user.spawners[server_name]
@@ -1168,7 +1169,7 @@ class BaseHandler(RequestHandler):
                 await user.stop(server_name)
                 toc = time.perf_counter()
                 self.log.info(
-                    "User %s server took %.3f seconds to stop", user.name, toc - tic
+                    "!!FREIA!!User %s server took %.3f seconds to stop", user.name, toc - tic
                 )
                 self.statsd.timing('spawner.stop', (toc - tic) * 1000)
                 SERVER_STOP_DURATION_SECONDS.labels(
