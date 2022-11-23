@@ -297,6 +297,7 @@ class BaseHandler(RequestHandler):
             user (User): the user having been refreshed,
                 or None if the user must login again to refresh auth info.
         """
+        print("refresh_auth")
         refresh_age = self.authenticator.auth_refresh_age
         if not refresh_age:
             return user
@@ -409,12 +410,14 @@ class BaseHandler(RequestHandler):
 
     def get_current_user_cookie(self):
         """get_current_user from a cookie token"""
+        print("get_current_user from a cookie token")
         return self._user_for_cookie(self.hub.cookie_name)
 
     async def get_current_user(self):
         """get current username"""
         print("get current username")
         if not hasattr(self, '_jupyterhub_user'):
+            print("no _jupyterhub_user attr")
             user = None
             try:
                 if self._accept_token_auth:

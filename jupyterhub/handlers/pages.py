@@ -473,6 +473,7 @@ class TokenPageHandler(BaseHandler):
 
     @web.authenticated
     async def get(self):
+        print("TokenPageHandler")
         never = datetime(1900, 1, 1)
 
         user = self.current_user
@@ -552,6 +553,7 @@ class ProxyErrorHandler(BaseHandler):
     """Handler for rendering proxy error pages"""
 
     async def get(self, status_code_s):
+        print("ProxyErrorHandler")
         status_code = int(status_code_s)
         status_message = responses.get(status_code, 'Unknown HTTP Error')
         # build template namespace
