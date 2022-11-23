@@ -54,7 +54,6 @@ class HomeHandler(BaseHandler):
 
     @web.authenticated
     async def get(self):
-        self.clear_login_cookie()
         print("HomeHandler: Current user: "+str(self.current_user))
         user = self.current_user
         if user.running:
