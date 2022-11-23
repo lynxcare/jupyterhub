@@ -387,7 +387,7 @@ class BaseHandler(RequestHandler):
         cookie_id = self.get_secure_cookie(
             cookie_name, cookie_value, max_age_days=self.cookie_max_age_days
         )
-        print("cookie_id: "+cookie_id)
+        print("cookie_id: "+str(cookie_id))
         def clear():
             self.clear_cookie(cookie_name, path=self.hub.base_url)
 
