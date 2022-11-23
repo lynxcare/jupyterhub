@@ -33,6 +33,7 @@ class RootHandler(BaseHandler):
     """
 
     def get(self):
+        print("RootHandler: Current user: "+str(self.current_user))
         user = self.current_user
         if self.default_url:
             # As set in jupyterhub_config.py
@@ -52,7 +53,7 @@ class HomeHandler(BaseHandler):
 
     @web.authenticated
     async def get(self):
-        print("Current user: "+self.current_user)
+        print("HomeHandler: Current user: "+str(self.current_user))
         user = self.current_user
         if user.running:
             # trigger poll_and_notify event in case of a server that died

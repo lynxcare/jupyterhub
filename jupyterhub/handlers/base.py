@@ -353,6 +353,7 @@ class BaseHandler(RequestHandler):
 
     def get_current_user_token(self):
         """get_current_user from Authorization header token"""
+        print("get_current_user from Authorization header token")
         # record token activity
         orm_token = self.get_token()
         if orm_token is None:
@@ -412,6 +413,7 @@ class BaseHandler(RequestHandler):
 
     async def get_current_user(self):
         """get current username"""
+        print("get current username")
         if not hasattr(self, '_jupyterhub_user'):
             user = None
             try:
@@ -489,6 +491,7 @@ class BaseHandler(RequestHandler):
         return user
 
     def clear_login_cookie(self, name=None):
+        print("clear login cookie")
         kwargs = {}
         if self.subdomain_host:
             kwargs['domain'] = self.domain
