@@ -361,9 +361,9 @@ class BaseHandler(RequestHandler):
         # record token activity
         orm_token = self.get_token()
         print("orm_token: "+str(orm_token))
-        print("orm_token.user: "+str(orm_token.user))
         if orm_token is None:
             return None
+        print("orm_token.user: "+str(orm_token.user))
         now = datetime.utcnow()
         recorded = self._record_activity(orm_token, now)
         if orm_token.user:
@@ -419,15 +419,15 @@ class BaseHandler(RequestHandler):
     def get_current_user_cookie(self):
         """get_current_user from a cookie token"""
         print("get_current_user from a cookie token")
-        print("Current user (cookie): "+str(self._user_for_cookie(self.hub.cookie_name)))
+        cookie=self._user_for_cookie(self.hub.cookie_name)
+        print("Current user (cookie): "+str(cookie))
         print("hub cookie name: "+str(self.hub.cookie_name))
-        return self._user_for_cookie(self.hub.cookie_name)
+        return cookie
 
     async def get_current_user(self):
         """get current username"""
         print("get current username")
         if not hasattr(self, '_jupyterhub_user'):
-            print("no _jupyterhub_user attr")
             user = None
             try:
                 if self._accept_token_auth:
@@ -530,6 +530,7 @@ class BaseHandler(RequestHandler):
                     self.db.commit()
 
         # clear hub cookie
+        print("self.hub.cookie_name: "+str(self.hub.cookie_name))
         self.clear_cookie(self.hub.cookie_name, path=self.hub.base_url, **kwargs)
         # clear services cookie
         self.clear_cookie(
@@ -1159,7 +1160,6 @@ class BaseHandler(RequestHandler):
         await user.stop(server_name)
 
     async def stop_single_user(self, user, server_name=''):
-        self.clear_login_cookie()
         if server_name not in user.spawners:
             raise KeyError("User %s has no such spawner %r", user.name, server_name)
         spawner = user.spawners[server_name]
@@ -1186,8 +1186,9 @@ class BaseHandler(RequestHandler):
                 await user.stop(server_name)
                 toc = time.perf_counter()
                 self.log.info(
-                    "!!FREIA!!User %s server took %.3f seconds to stop", user.name, toc - tic
+                    "User %s server took %.3f seconds to stop", user.name, toc - tic
                 )
+                self.clear_login_cookie()
                 self.statsd.timing('spawner.stop', (toc - tic) * 1000)
                 SERVER_STOP_DURATION_SECONDS.labels(
                     status=ServerStopStatus.success
