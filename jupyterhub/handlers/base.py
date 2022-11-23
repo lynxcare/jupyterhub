@@ -355,8 +355,10 @@ class BaseHandler(RequestHandler):
     def get_current_user_token(self):
         """get_current_user from Authorization header token"""
         print("get_current_user from Authorization header token")
+        print("Current user: "+str(self.current_user))
         # record token activity
         orm_token = self.get_token()
+        print("orm_token: "+str(orm_token))
         if orm_token is None:
             return None
         now = datetime.utcnow()
@@ -416,6 +418,7 @@ class BaseHandler(RequestHandler):
     async def get_current_user(self):
         """get current username"""
         print("get current username")
+        print("Current user: "+str(self.current_user))
         if not hasattr(self, '_jupyterhub_user'):
             print("no _jupyterhub_user attr")
             user = None
