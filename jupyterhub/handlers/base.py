@@ -358,6 +358,7 @@ class BaseHandler(RequestHandler):
         # record token activity
         orm_token = self.get_token()
         print("orm_token: "+str(orm_token))
+        print("orm_token.user: "+str(orm_token.user))
         if orm_token is None:
             return None
         now = datetime.utcnow()
@@ -374,6 +375,7 @@ class BaseHandler(RequestHandler):
         if orm_token.service:
             return orm_token.service
 
+        print("Return Authorization header token: " + str(self._user_from_orm(orm_token.user)))
         return self._user_from_orm(orm_token.user)
 
     def _user_for_cookie(self, cookie_name, cookie_value=None):
@@ -433,6 +435,7 @@ class BaseHandler(RequestHandler):
                 self._jupyterhub_user = None
                 # but still raise, which will get handled in .prepare()
                 raise
+        print("Return user: "+str(self._jupyterhub_user))
         return self._jupyterhub_user
 
     def _resolve_roles_and_scopes(self):
