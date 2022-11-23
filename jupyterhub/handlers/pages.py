@@ -52,6 +52,7 @@ class HomeHandler(BaseHandler):
 
     @web.authenticated
     async def get(self):
+        print("Current user: "+self.current_user)
         user = self.current_user
         if user.running:
             # trigger poll_and_notify event in case of a server that died
