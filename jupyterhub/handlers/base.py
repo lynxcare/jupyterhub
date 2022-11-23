@@ -299,6 +299,7 @@ class BaseHandler(RequestHandler):
         """
         print("refresh_auth")
         refresh_age = self.authenticator.auth_refresh_age
+        print("refresh age: "+ str(refresh_age))
         if not refresh_age:
             return user
         now = time.monotonic()
@@ -308,6 +309,7 @@ class BaseHandler(RequestHandler):
             and (now - user._auth_refreshed < refresh_age)
         ):
             # auth up-to-date
+            print("auth up-to-date")
             return user
 
         # refresh a user at most once per request
@@ -315,6 +317,7 @@ class BaseHandler(RequestHandler):
             self._refreshed_users = set()
         if user.name in self._refreshed_users:
             # already refreshed during this request
+            print("already refreshed during this request")
             return user
         self._refreshed_users.add(user.name)
 
@@ -414,6 +417,7 @@ class BaseHandler(RequestHandler):
     def get_current_user_cookie(self):
         """get_current_user from a cookie token"""
         print("get_current_user from a cookie token")
+        print("Current user (cookie): "+str(self._user_for_cookie(self.hub.cookie_name)))
         return self._user_for_cookie(self.hub.cookie_name)
 
     async def get_current_user(self):
