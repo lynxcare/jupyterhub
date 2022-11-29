@@ -297,9 +297,9 @@ class BaseHandler(RequestHandler):
             user (User): the user having been refreshed,
                 or None if the user must login again to refresh auth info.
         """
-        print("refresh_auth")
+        
         refresh_age = self.authenticator.auth_refresh_age
-        print("refresh age: "+ str(refresh_age))
+
         if not refresh_age:
             return user
         now = time.monotonic()
@@ -357,13 +357,10 @@ class BaseHandler(RequestHandler):
 
     def get_current_user_token(self):
         """get_current_user from Authorization header token"""
-        print("get_current_user from Authorization header token")
         # record token activity
         orm_token = self.get_token()
-        print("orm_token: "+str(orm_token))
         if orm_token is None:
             return None
-        print("orm_token.user: "+str(orm_token.user))
         now = datetime.utcnow()
         recorded = self._record_activity(orm_token, now)
         if orm_token.user:
@@ -378,7 +375,6 @@ class BaseHandler(RequestHandler):
         if orm_token.service:
             return orm_token.service
 
-        print("Return Authorization header token: " + str(self._user_from_orm(orm_token.user)))
         return self._user_from_orm(orm_token.user)
 
     def _user_for_cookie(self, cookie_name, cookie_value=None):
@@ -387,7 +383,6 @@ class BaseHandler(RequestHandler):
         cookie_id = self.get_secure_cookie(
             cookie_name, cookie_value, max_age_days=self.cookie_max_age_days
         )
-        print("cookie_id: "+str(cookie_id))
         def clear():
             self.clear_cookie(cookie_name, path=self.hub.base_url)
 
@@ -399,7 +394,6 @@ class BaseHandler(RequestHandler):
         cookie_id = cookie_id.decode('utf8', 'replace')
         u = self.db.query(orm.User).filter(orm.User.cookie_id == cookie_id).first()
         user = self._user_from_orm(u)
-        print("User Cookie: "+str(user))
         if user is None:
             self.log.warning("Invalid cookie token")
             # have cookie, but it's not valid. Clear it and start over.
@@ -418,15 +412,11 @@ class BaseHandler(RequestHandler):
 
     def get_current_user_cookie(self):
         """get_current_user from a cookie token"""
-        print("get_current_user from a cookie token")
-        cookie=self._user_for_cookie(self.hub.cookie_name)
-        print("Current user (cookie): "+str(cookie))
-        print("hub cookie name: "+str(self.hub.cookie_name))
-        return cookie
+        return self._user_for_cookie(self.hub.cookie_name)
+
 
     async def get_current_user(self):
         """get current username"""
-        print("get current username")
         if not hasattr(self, '_jupyterhub_user'):
             user = None
             try:
@@ -442,7 +432,6 @@ class BaseHandler(RequestHandler):
                 self._jupyterhub_user = None
                 # but still raise, which will get handled in .prepare()
                 raise
-        print("Return user: "+str(self._jupyterhub_user))
         return self._jupyterhub_user
 
     def _resolve_roles_and_scopes(self):
@@ -530,7 +519,6 @@ class BaseHandler(RequestHandler):
                     self.db.commit()
 
         # clear hub cookie
-        print("self.hub.cookie_name: "+str(self.hub.cookie_name))
         self.clear_cookie(self.hub.cookie_name, path=self.hub.base_url, **kwargs)
         # clear services cookie
         self.clear_cookie(
