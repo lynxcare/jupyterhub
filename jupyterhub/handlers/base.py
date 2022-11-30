@@ -309,7 +309,6 @@ class BaseHandler(RequestHandler):
             and (now - user._auth_refreshed < refresh_age)
         ):
             # auth up-to-date
-            print("auth up-to-date")
             return user
 
         # refresh a user at most once per request
@@ -379,7 +378,6 @@ class BaseHandler(RequestHandler):
 
     def _user_for_cookie(self, cookie_name, cookie_value=None):
         """Get the User for a given cookie, if there is one"""
-        print("Get the User for a given cookie, if there is one")
         cookie_id = self.get_secure_cookie(
             cookie_name, cookie_value, max_age_days=self.cookie_max_age_days
         )
