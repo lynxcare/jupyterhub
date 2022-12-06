@@ -1,6 +1,5 @@
 from .jwtauthenticator import (
     JSONWebTokenAuthenticator,
-    JSONWebTokenLocalAuthenticator,
     JSONWebTokenLoginHandler
 )
 
