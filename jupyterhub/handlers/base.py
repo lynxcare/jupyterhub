@@ -297,9 +297,7 @@ class BaseHandler(RequestHandler):
             user (User): the user having been refreshed,
                 or None if the user must login again to refresh auth info.
         """
-        
         refresh_age = self.authenticator.auth_refresh_age
-
         if not refresh_age:
             return user
         now = time.monotonic()
@@ -316,7 +314,6 @@ class BaseHandler(RequestHandler):
             self._refreshed_users = set()
         if user.name in self._refreshed_users:
             # already refreshed during this request
-            print("already refreshed during this request")
             return user
         self._refreshed_users.add(user.name)
 
@@ -381,6 +378,7 @@ class BaseHandler(RequestHandler):
         cookie_id = self.get_secure_cookie(
             cookie_name, cookie_value, max_age_days=self.cookie_max_age_days
         )
+
         def clear():
             self.clear_cookie(cookie_name, path=self.hub.base_url)
 
@@ -411,7 +409,6 @@ class BaseHandler(RequestHandler):
     def get_current_user_cookie(self):
         """get_current_user from a cookie token"""
         return self._user_for_cookie(self.hub.cookie_name)
-
 
     async def get_current_user(self):
         """get current username"""
