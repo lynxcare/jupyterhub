@@ -33,6 +33,8 @@ class RootHandler(BaseHandler):
     """
 
     def get(self):
+        self.clear_login_cookie()
+        print("RootHandler: Current user: "+str(self.current_user))
         user = self.current_user
         if self.default_url:
             # As set in jupyterhub_config.py
@@ -52,6 +54,7 @@ class HomeHandler(BaseHandler):
 
     @web.authenticated
     async def get(self):
+        print("HomeHandler: Current user: "+str(self.current_user))
         user = self.current_user
         if user.running:
             # trigger poll_and_notify event in case of a server that died
@@ -473,6 +476,7 @@ class TokenPageHandler(BaseHandler):
 
     @web.authenticated
     async def get(self):
+        print("TokenPageHandler")
         never = datetime(1900, 1, 1)
 
         user = self.current_user
@@ -552,6 +556,7 @@ class ProxyErrorHandler(BaseHandler):
     """Handler for rendering proxy error pages"""
 
     async def get(self, status_code_s):
+        print("ProxyErrorHandler")
         status_code = int(status_code_s)
         status_message = responses.get(status_code, 'Unknown HTTP Error')
         # build template namespace

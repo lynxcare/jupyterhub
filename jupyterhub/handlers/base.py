@@ -500,6 +500,7 @@ class BaseHandler(RequestHandler):
         return user
 
     def clear_login_cookie(self, name=None):
+        print("clear login cookie")
         kwargs = {}
         if self.subdomain_host:
             kwargs['domain'] = self.domain
@@ -1183,6 +1184,7 @@ class BaseHandler(RequestHandler):
                 self.log.info(
                     "User %s server took %.3f seconds to stop", user.name, toc - tic
                 )
+                self.clear_login_cookie()
                 self.statsd.timing('spawner.stop', (toc - tic) * 1000)
                 SERVER_STOP_DURATION_SECONDS.labels(
                     status=ServerStopStatus.success
