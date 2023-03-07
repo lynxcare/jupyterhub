@@ -878,6 +878,7 @@ class ConfigurableHTTPProxy(Proxy):
         """Make an authenticated API request of the proxy."""
         client = client or AsyncHTTPClient()
         url = url_path_join(self.api_url, 'api/routes', path)
+        print("TESTFREIA"+str(url))
 
         if isinstance(body, dict):
             body = json.dumps(body)
