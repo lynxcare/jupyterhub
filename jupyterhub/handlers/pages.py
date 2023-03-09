@@ -33,7 +33,7 @@ class RootHandler(BaseHandler):
     """
 
     def get(self):
-        self.clear_login_cookie()
+        # self.clear_login_cookie()
         print("RootHandler: Current user: "+str(self.current_user))
         user = self.current_user
         if self.default_url:
