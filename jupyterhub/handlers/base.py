@@ -1139,7 +1139,7 @@ class BaseHandler(RequestHandler):
             status = 'unknown'
 
         self.log.warning(
-            "!!FREIA!User %s server stopped, with exit code: %s", user.name, status
+            "User %s server stopped, with exit code: %s", user.name, status
         )
         proxy_deletion_start_time = time.perf_counter()
         try:
